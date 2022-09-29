@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+    <title>Some Kinda Photo Gallery</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="content">
+        <header class="w3-container">
+            <div class="logo">
+                <a href="?site=Gallery">
+                    <img id="logo" src="img/logo.png" class="w3-left w3-padding-8 w3-image">
+                </a>
+            </div>
+
+            <h1 class="w3-margin-left title">
+                Photo Gallery
+            </h1>
+
+            <button class="navigation-button w3-button w3-xlarge" onclick="openNavigation()">☰</button>
+            <div class="w3-sidebar w3-bar-block w3-border-right w3-mobile" id="navigation">
+                <button onclick="closeNavigation()" class="w3-bar-item w3-large">Close &times;</button>
+                <a href="?site=Gallery" v-bind:class="{active: isActive('Gallery')}" class="w3-bar-item w3-button ">
+                    Gallery
+                </a>
+                <a href="?site=Upload" v-bind:class="{active: isActive('Upload')}" class="w3-bar-item w3-button ">
+                    Upload Image
+                </a>
+                <a href="?site=Canvas" v-bind:class="{active: isActive('Canvas')}" class="w3-bar-item w3-button ">
+                    Canvas
+                </a>
+            </div>
+        </header>
+
+        <main class="w3-container">
+            <div class="w3-container">
+                <template v-if="isActive('Gallery')">
+                    <div class="w3-container w3-mobile">
+                        <p>This is a gallery which allows local images upload. This only works locally and the list of
+                            uploaded images is saved in your cookies.</p>
+
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col w3-third" v-for="image in images">
+                            <section class="w3-card w3-margin w3-mobile">
+                                <div class="w3-large">
+                                    <h3>{{ image.name }}</h3>
+                                </div>
+                                <img class="w3-image w3-padding" v-bind:alt="image.name" v-bind:src="image.src" />
+                                <div class="w3-medium">
+                                    <p>{{ image.description }}</p>
+                                    <div class="w3-small">
+                                        <p>Image has been taken on: {{ image.date }}</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </template>
+                <template v-else-if="isActive('Upload')">
+                    <div class="w3-mobile">
+                        <h2>Upload your image:</h2>
+                        <p>Here you can upload your own image.</p>
+                        <form class="w3-container" action="upload.php" id="uploadForm" method="post"
+                            enctype="multipart/form-data">
+                            <div class="w3-row">
+                                <div class="w3-row-padding w3-half">
+                                    <label for="imageName" class="w3-label "><b>Image Name</b></label>
+                                    <input id="imageName" name="imageName" class="w3-input w3-border" type="text"
+                                        minlength="3">
+                                </div>
+                                <div class="w3-row-padding w3-half">
+                                    <label for="imageFile" class="w3-label w3-padding"><b>Image File</b></label>
+                                    <input id="imageFile" name="imageFile" class="w3-input w3-border" type="file"
+                                        accept="image/*">
+                                </div>
+                                <div class="w3-row-padding w3-half">
+                                    <label for="imageDescription" class="w3-label w3-padding"><b>Image
+                                            Description</b></label>
+                                    <input id="imageDescription" name="imageDescription" class="w3-input w3-border"
+                                        type="text" maxlength="255">
+                                </div>
+                                <div class="w3-row-padding w3-half">
+                                    <label for="imageDate" class="w3-label w3-padding "><b>Date the Image has been
+                                            taken</b></label>
+                                    <input id="imageDate" name="imageDate" class="w3-input w3-border" type="date">
+                                </div>
+                            </div>
+                            <input class="w3-btn w3-light-blue" type="submit" name="submit"
+                                onclick="return validateUpload()" />
+                        </form>
+                    </div>
+
+                </template>
+                <template v-else-if="isActive('Canvas')">
+                    <div class="w3-container">
+                        <h2>This weird image would also be accepted in our community.</h2>
+                        <canvas id="myCanvas" height="500" width="500"></canvas>
+                    </div>
+                </template>
+            </div>
+        </main>
+    </div>
+    <footer class="w3-container w3-footer">
+        <div class="w3-bar">
+            <div class="w3-bar-item w3-left">WEBT HSLU 2021/22</div>
+            <div class="w3-bar-item w3-right">Denis Huelin</div>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script src="js/javascript.js"></script>
